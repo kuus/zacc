@@ -69,7 +69,11 @@ gulp.task('release', function (callback) {
 });
 
 gulp.task('deploy', function() {
-  return gulp.src(['./index.html', 'dist/**/*'])
+  return gulp.src([
+    './index.html',
+    './dist/**/*.js',
+    './dist/**/*.css'
+  ], { base: './' })
     .pipe($.ghPages());
 });
 
