@@ -1,3 +1,9 @@
+/*!
+ * Zacc v0.0.4 (http://kuus.github.io/zacc)
+ * Accordion inspired by Google Closure Zippy
+ * Copyright 2015 kuus <kunderikuus@gmail.com> (http://kunderikuus.net)
+ * license MIT
+ */
 (function(window, document) {
 
   /** @const */

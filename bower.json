@@ -1,0 +1,24 @@
+{
+  "name": "zacc",
+  "version": "0.0.1",
+  "authors": [
+    "kuus <kunderikuus@gmail.com>"
+  ],
+  "main": "zacc.js",
+  "keywords": [
+    "accordion",
+    "ui"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kuus/zacc",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "closure-compiler": "~0.2.6"
+  }
+}

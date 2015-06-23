@@ -1,0 +1,40 @@
+extends _base
+
+block styles
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+  link(rel='stylesheet', href='dist/zacc.min.css')
+  style.
+    .col-sm-6 {
+      background: #fafafa;
+    }
+
+block scripts
+  // use jquery and velocity to support old browsers
+  // script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+  // script(src='http://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js')
+  //- script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+  script(src='dist/zacc.min.js')
+
+block demo
+  .jumbotron.text-center
+    .container
+      h1 Zacc
+      p
+        | Accordion inspired by Google Closure's Zippy.
+        small Built by&nbsp;
+          a(href='https://github.com/kuus') kuus
+      h3 Features
+      ul.list-unstyled
+        li Vanilla fast js (no dependencies)
+        li Keyboard accessible
+        li Semantic markup
+        li Progressive enhancement approach (content accessible without js)
+  .container
+    .row
+      .col-sm-6.col-sm-offset-3
+        each index in [1,2,3,4,5,6,7,8,9]
+          a.zacc= index
+           |  Title of accordion content
+          div
+            p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non laudantium voluptas fugiat magnam distinctio, eius, quisquam, similique, voluptatem sapiente accusamus ut quam beatae excepturi labore ipsam at illum reprehenderit dolorum! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non laudantium voluptas fugiat magnam distinctio, eius, quisquam, similique, voluptatem sapiente accusamus ut quam beatae excepturi labore ipsam at illum reprehenderit dolorum!
+            img.img-responsive(src="http://lorempixel.com/output/food-q-g-640-480-10.jpg", alt="")

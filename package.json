@@ -1,9 +1,15 @@
 {
   "name": "zacc",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Accordion inspired by Google Closure Zippy",
+  "config": {
+    "namePretty": "Zacc",
+    "nameShort": "zc",
+    "startYear": 2015
+  },
   "license": "MIT",
-  "repository": "kuus/zacc",
+  "repository": "http://github.com/kuus/zacc",
+  "homepage": "http://kuus.github.io/zacc",
   "author": "kuus <kunderikuus@gmail.com> (http://kunderikuus.net)",
   "main": "dist/zacc.js",
   "engines": {
@@ -22,8 +28,37 @@
     "vanilla-js"
   ],
   "dependencies": {},
-  "peerDependencies": {
-    "gulp": ">=3.5.0"
-  },
-  "devDependencies": {}
+  "devDependencies": {
+    "autoprefixer-core": "^5.1.8",
+    "browser-sync": "^2.2.1",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-cache": "^0.2.8",
+    "gulp-minify-css": "^1.0.0",
+    "gulp-if": "~1.2.5",
+    "gulp-jshint": "^1.9.2",
+    "gulp-load-plugins": "^0.8.1",
+    "gulp-postcss": "^5.0.0",
+    "gulp-sass": "^2.0.0",
+    "gulp-size": "^1.2.1",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-combine-media-queries": "^0.2.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-header": "^1.2.2",
+    "jshint-stylish": "^1.0.1",
+    "main-bower-files": "^2.5.0",
+    "opn": "^1.0.1",
+    "wiredep": "^2.2.2",
+    "minimist": "^1.1.1",
+    "run-sequence": "~1.1.1",
+    "gulp-bump": "~0.3.1",
+    "gulp-util": "~3.0.5",
+    "gulp-git": "~1.2.4",
+    "gulp-rename": "~1.2.2",
+    "gulp-jade": "~1.0.1",
+    "gulp-closure-compiler": "~0.2.19",
+    "gulp-replace": "~0.5.3",
+    "gulp-strip-debug": "~1.0.2",
+    "gulp-gh-pages": "~0.5.2"
+  }
 }
