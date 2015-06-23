@@ -114,7 +114,7 @@ gulp.task('styles', function () {
     ]))
     .pipe($.combineMediaQueries()) // { log: true }
     .pipe($.sourcemaps.write())
-    // .pipe($.header(banner, { pkg: pkg }))
+    .pipe($.header(banner, { pkg: pkg }))
     .pipe($.rename(pkg.name + '.css'))
     .pipe(gulp.dest('./dist'))
     .pipe($.if(argv.dist, $.minifyCss({ compatibility: 'ie8,+units.rem' })))

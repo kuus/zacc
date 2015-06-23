@@ -1,6 +1,5 @@
 # [Zacc](http://kuus.github.io/zacc)
-Accordion inspired by Google Closure's Zippy.
-View the [DEMO](http://kuus.github.io/zacc)
+Accordion inspired by Google Closure's Zippy. [DEMO](http://kuus.github.io/zacc)
 
 ###Features
 - Vanilla fast js (no dependencies)
