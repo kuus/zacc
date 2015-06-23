@@ -1,3 +1,9 @@
+/*!
+ * Zacc v0.0.4 (http://kuus.github.io/zacc)
+ * Accordion inspired by Google Closure Zippy
+ * Copyright 2015 kuus <kunderikuus@gmail.com> (http://kunderikuus.net)
+ * license MIT
+ */
 $namespace: 'zacc';
 $gutter-width: 15px;
 $animation-duration: .68 !default;
@@ -7,7 +13,7 @@ $heading-bg: #fff;
 $heading-bg-hover: darken($heading-bg, 5%);
 $arrow-size: 4px;
 $arrow-thickness: $arrow-size * 1.75;
-$arrow-color: #666;
+$arrow-color: #4285f4;
 $arrow-color-hover: darken($arrow-color, 15%);
 $arrow-bg: $heading-bg;
 $arrow-bg-hover: $heading-bg-hover;
@@ -18,10 +24,8 @@ $arrow-bg-hover: $heading-bg-hover;
   width: 100%;
   box-sizing: border-box;
   display: inline-block;
-  background-color: #fff;
-  color: #4285f4;
-  cursor: pointer;
   padding: $gutter-width 50px $gutter-width $gutter-width;
+  cursor: pointer;
   outline: none;
 
   &:active,
@@ -44,7 +48,7 @@ $arrow-bg-hover: $heading-bg-hover;
     bottom: -10px;
     height: 10px;
     border-top-color: darken($border-color, 5%);
-    background: linear-gradient(top, rgba(0,0,0,.08), rgba(0,0,0,0));
+    background: linear-gradient(rgba(0,0,0,.08), rgba(0,0,0,0));
     -webkit-mask-box-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(0,0,0,0)), color-stop(0.5, rgba(0,0,0,1)), color-stop(1, rgba(0,0,0,0)));
   }
 
@@ -55,7 +59,7 @@ $arrow-bg-hover: $heading-bg-hover;
   }
 
   .no-cssmask &-expanded & {
-    box-shadow: 0 20px 23px -20px rgba(0,0,0,.08);
+    box-shadow: 0 15px 20px -15px rgba(0,0,0,.08);
     border-bottom-color: $border-color;
   }
 

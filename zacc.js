@@ -1,25 +1,39 @@
+/*!
+ * Zacc v0.0.4 (http://kuus.github.io/zacc)
+ * Accordion inspired by Google Closure Zippy
+ * Copyright 2015 kuus <kunderikuus@gmail.com> (http://kunderikuus.net)
+ * license MIT
+ */
 (function(window, document) {
 
+  /** @const */
   var namespace = 'zacc';
 
   var selector = namespace;
   var headings = document.getElementsByClassName(selector);
   var ANIMATION_TIME = 680;
-  var modernizr = window.Modernizr;
-  var velocity = window.Velocity;
-  var supportsVelocity = !!window.Velocity;
+
+  // libraries to maybe use
+  var modernizr = window['Modernizr'];
+  var $ = window['jQuery'];
+  var velocity = $ ? $.Velocity || null : window['Velocity'] || null;
+
+  // support
+  var enableJquery = !!$;
+  var enableVelocity = $ ? !!$.Velocity : !!velocity;
   var supportCSSmasks = !!modernizr ? modernizr.cssmask : getCSSmasksSupport();
 
-  console.log('supportsVelocity', supportsVelocity);
+  // Some debug
+  // console.log('enableJquery', enableJquery, 'enableVelocity', enableVelocity);
 
   /**
    * Get CSS masks support
-   * @return {void}
+   * @return {boolean}
    */
   function getCSSmasksSupport () {
     var html = document.getElementsByTagName('html')[0];
     var _addHtmlClass = function (prop, supported) {
-      html.className += supported ? prop + ' ' : 'no-' + prop + ' ';
+      html.className += supported ? ' ' + prop + ' ' : ' no-' + prop + ' ';
     };
     if (modernizr) {
       modernizr.addTest('cssmask', modernizr.testAllProps('maskRepeat'));
@@ -40,7 +54,6 @@
 
   /**
    * Init
-   * @return {void}
    */
   function init () {
     if (headings) {
@@ -60,17 +73,17 @@
    */
   function Accordion (heading) {
     this.expanded = false;
-    this.$heading = heading;
-    this.$content = null;
+    this.__heading = heading;
+    this.__content = null;
     this.height = 0;
 
-    this.create();
-    this.collapse(supportsVelocity);
-    if (!supportsVelocity) {
-      this.setCSStransition();
+    this._create();
+    this.collapse(enableVelocity);
+    if (!enableVelocity) {
+      this._setCSStransition();
     }
-    this.bindMouse();
-    this.bindKeyboard();
+    this._bindMouse();
+    this._bindKeyboard();
   }
 
   /**
@@ -78,21 +91,19 @@
    *
    * on load don't show the collapse animation, just quickly collapse
    * all the content, wait a bit and then set the animation (not through css)
-   * @@doubt
    */
-  Accordion.prototype.setCSStransition = function () {
+  Accordion.prototype._setCSStransition = function () {
     var time = ANIMATION_TIME / 1000 + 's';
     window.setTimeout(function() {
-      this.$content.style.transition = 'margin-top ' + time + ' ease';
+      this.__content.style.transition = 'margin-top ' + time + ' ease';
     }.bind(this), 5);
   }
 
   /**
    * Create
-   * @return {void}
    */
-  Accordion.prototype.create = function () {
-    var heading = this.$heading;
+  Accordion.prototype._create = function () {
+    var heading = this.__heading;
     var headingWrap = document.createElement('div');
     var content = heading.nextElementSibling;
     var contentWrap = document.createElement('div');
@@ -113,9 +124,12 @@
     contentWrap.appendChild(content);
 
     // set DOM as props
-    this.$headingWrap = headingWrap;
-    this.$content = content;
-    this.$contentWrap = contentWrap;
+    this.__headingWrap = headingWrap;
+    this.__content = content;
+    if (enableJquery) {
+      this.__$content = $(content);
+    }
+    this.__contentWrap = contentWrap;
 
     // calculate accordion content height
     this.height = contentWrap.offsetHeight;
@@ -123,150 +137,159 @@
 
   /**
    * Bind mouse
-   * @return {void}
    */
-  Accordion.prototype.bindMouse = function () {
-    this.$heading.addEventListener('click', this.toggle.bind(this));
+  Accordion.prototype._bindMouse = function () {
+    this.__heading.addEventListener('click', this.toggle.bind(this));
   }
 
   /**
    * Bind keyboard
    *
    * @see https://css-tricks.com/snippets/javascript/javascript-keycodes/
-   * @return {void}
    */
-  Accordion.prototype.bindKeyboard = function () {
+  Accordion.prototype._bindKeyboard = function () {
     var _onEnter = function (event) {
       if (event.keyCode === 13 || event.keyCode === 32) { // Enter or Space
         this.toggle();
       }
     }.bind(this);
-    this.$heading.addEventListener('keyup', _onEnter);
+    this.__heading.addEventListener('keyup', _onEnter);
   }
 
   /**
    * Toggle
-   * @return {void}
    */
   Accordion.prototype.toggle = function () {
     if (this.expanded) {
-      this.collapse();
+      this.collapse(false);
     } else {
       this.expand();
     }
   }
+  // @@api
+  Accordion.prototype['toggle'] = Accordion.prototype.toggle;
 
   /**
    * Collapse start
-   * @return {void}
+   * @private
    */
   Accordion.prototype._collapseStart = function () {
-    this.$headingWrap.classList.add(namespace + '-collapsed');
-    this.$headingWrap.classList.remove(namespace + '-expanded');
-    this.$heading.setAttribute('aria-expanded', false);
+    this.__headingWrap.classList.add(namespace + '-collapsed');
+    this.__headingWrap.classList.remove(namespace + '-expanded');
+    this.__heading.setAttribute('aria-expanded', false);
     // immediately hide the overflow for the animation
-    this.$contentWrap.style.overflow = 'hidden';
+    this.__contentWrap.style.overflow = 'hidden';
   }
 
   /**
    * Collapse end
-   * @return {void}
+   * @private
    */
   Accordion.prototype._collapseEnd = function () {
-    this.$contentWrap.style.display = 'none';
+    this.__contentWrap.style.display = 'none';
   }
 
   /**
    * Collapse
-   * @return {void}
    */
   Accordion.prototype.collapse = function (dontAnimate) {
+    var negativeHeight = -this.height;
 
     if (dontAnimate) {
       this._collapseStart();
-      this.$content.style.marginTop = -this.height + 'px';
-      this.$contentWrap.style.display = 'none';
+      this.__content.style.marginTop = negativeHeight + 'px';
+      this.__contentWrap.style.display = 'none';
     } else {
-      if (supportsVelocity) {
-        // with Velocity
-        Velocity(this.$content, 'stop', true);
-        Velocity(this.$content, { marginTop: -this.height }, {
+      if (enableVelocity) {
+        var velocityOpts = {
           duration: ANIMATION_TIME,
           // easing: [50, 15],
           begin: this._collapseStart.bind(this),
           complete: this._collapseEnd.bind(this)
-        });
+        };
+        // with Velocity
+        if (enableJquery) {
+          this.__$content['velocity']('stop', true);
+          this.__$content['velocity']({ marginTop: negativeHeight }, velocityOpts);
+        } else {
+          velocity(this.__content, 'stop', true);
+          velocity(this.__content, { marginTop: negativeHeight }, velocityOpts);
+        }
 
       } else {
         this._collapseStart();
 
-        this.$content.style.marginTop = -this.height + 'px';
+        this.__content.style.marginTop = negativeHeight + 'px';
 
         // wait the end of the animation before to hide the content wrapper
-        window.clearInterval(this.animation);
-        this.animation = window.setInterval(function () {
-          this._collapseEnd();
-          window.clearInterval(this.animation);
-        }.bind(this), ANIMATION_TIME);
+        window.clearTimeout(this.animation);
+        this.animation = window.setTimeout(this._collapseEnd.bind(this), ANIMATION_TIME);
       }
     }
 
     this.expanded = false;
   }
+  // @@api
+  Accordion.prototype['collapse'] = Accordion.prototype.collapse;
 
   /**
    * Expand start
-   * @return {void}
    */
   Accordion.prototype._expandStart = function () {
-    this.$headingWrap.classList.add(namespace + '-expanded');
-    this.$headingWrap.classList.remove(namespace + '-collapsed');
-    this.$heading.setAttribute('aria-expanded', true);
-    this.$contentWrap.style.display = '';
+    this.__headingWrap.classList.add(namespace + '-expanded');
+    this.__headingWrap.classList.remove(namespace + '-collapsed');
+    this.__heading.setAttribute('aria-expanded', true);
+    this.__contentWrap.style.display = '';
   }
 
   /**
    * Expand end
-   * @return {void}
    */
   Accordion.prototype._expandEnd = function () {
-    this.$contentWrap.style.overflow = '';
+    this.__contentWrap.style.overflow = '';
   }
 
   /**
    * Expand
-   * @return {void}
    */
   Accordion.prototype.expand = function () {
-    if (supportsVelocity) {
-
-      // with Velocity
-      Velocity(this.$content, 'stop', true);
-      Velocity(this.$content, { marginTop: 0 }, {
+    if (enableVelocity) {
+      var velocityOpts = {
         display: '',
         duration: ANIMATION_TIME,
         // easing: [50, 15],
         begin: this._expandStart.bind(this),
-        complete: this._expandEnd.bind(this),
-      });
+        complete: this._expandEnd.bind(this)
+      };
+      // with Velocity
+      if (enableJquery) {
+        this.__$content['velocity']('stop', true);
+        this.__$content['velocity']({ marginTop: 0 }, velocityOpts);
+      } else {
+        velocity(this.__content, 'stop', true);
+        velocity(this.__content, { marginTop: 0 }, velocityOpts);
+      }
     } else {
 
       this._expandStart();
       // we need this in a timeout to make the css animation works
       window.setTimeout(function() {
-        this.$content.style.marginTop = 0;
-      }.bind(this), 10);
+        this.__content.style.marginTop = 0;
+      }.bind(this), 50);
 
       // wait the end of the animation, then don't cut the overflow anymore
-      window.clearInterval(this.animation);
-      this.animation = window.setInterval(function () {
-        this._expandEnd();
-        window.clearInterval(this.animation);
-      }.bind(this), ANIMATION_TIME);
+      window.clearTimeout(this.animation);
+      this.animation = window.setTimeout(this._expandEnd.bind(this), ANIMATION_TIME);
     }
 
     this.expanded = true;
   }
+  // @@api
+  Accordion.prototype['expand'] = Accordion.prototype.expand;
+
+  // @@api
+  window['Zacc'] = window['Zacc'] || Accordion.prototype;
 
   init();
+
 })(window, document);
