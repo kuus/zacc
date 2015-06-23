@@ -1,13 +1,15 @@
 {
   "name": "zacc",
+  "description": "Accordion inspired by Google Closure Zippy",
   "version": "0.0.1",
   "authors": [
     "kuus <kunderikuus@gmail.com>"
   ],
   "main": "zacc.js",
   "keywords": [
+    "ui",
     "accordion",
-    "ui"
+    "vanilla-js"
   ],
   "license": "MIT",
   "homepage": "https://github.com/kuus/zacc",
@@ -18,7 +20,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {
+  "devDependencies": {
     "closure-compiler": "~0.2.6"
   }
 }

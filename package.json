@@ -1,6 +1,6 @@
 {
   "name": "zacc",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "description": "Accordion inspired by Google Closure Zippy",
   "config": {
     "namePretty": "Zacc",
